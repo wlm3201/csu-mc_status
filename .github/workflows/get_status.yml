@@ -1,0 +1,21 @@
+name: get_status
+on:
+  schedule:
+  - cron: '30 * * * *'
+  workflow_dispatch:
+jobs:
+  run_python_script:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: pip install requests mcstatus pytz
+    - name: Run Python script
+      env:
+        apikey: ${{ secrets.apikey }}
+      run: python get_status.py
