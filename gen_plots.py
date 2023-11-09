@@ -38,7 +38,6 @@ def day(server):
     plt.title(server + " 日活")
     plt.xticks(hours)
     plt.savefig(f"plots/日活_{server}_{yesterday}.png")
-    plt.show()
 
 
 def week(server):
@@ -56,7 +55,6 @@ def week(server):
     plt.yticks(ticks=np.arange(0, 24), labels=np.arange(1, 25))
     plt.colorbar()
     plt.savefig(f"plots/周活_{server}_{(today.day - 1) // 7 + 1}.png")
-    plt.show()
 
 
 def month(server):
@@ -79,7 +77,6 @@ def month(server):
         for j in range(heatmap.shape[1]):
             plt.text(j, i, heatmap[i, j], ha="center", va="center")
     plt.savefig(f"plots/月活_{server}_{date}.png")
-    plt.show()
 
 
 if __name__ == "__main__":
