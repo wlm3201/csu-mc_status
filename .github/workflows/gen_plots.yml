@@ -1,0 +1,26 @@
+name: gen_plots
+on:
+  schedule:
+  - cron: '0 0 * * *'
+  workflow_dispatch:
+jobs:
+  run_python_script:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: pip install requests pytz numpy matplotlib scipy
+    - name: Run Python script
+      env:
+        apikey: ${{ secrets.apikey }}
+      run: python gen_plots.py
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: plots
