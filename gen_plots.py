@@ -32,7 +32,7 @@ def day(server, color):
     counts = np.zeros(24)
     for i in data:
         counts[i[0]] = i[1]
-    f = interp1d(hours, counts, kind="next")
+    f = interp1d(hours, counts, kind="cubic")
     minites = np.linspace(0, 23, num=23 * 60)
     plt.plot(hours, counts, ".", minites, f(minites), "-", label=server, color=color)
     plt.legend()
