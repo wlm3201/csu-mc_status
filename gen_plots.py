@@ -22,7 +22,7 @@ def dbhub(statement, relative):
     return r.json()
 
 
-def day(server):
+def day(server, color):
     yesterday = today - timedelta(days=1)
     yesterday = yesterday.strftime("%Y-%m-%d")
     statment = f'SELECT hour , count FROM online_stats WHERE server = "{server}" AND date= "{yesterday}" ORDER BY hour'
@@ -32,13 +32,12 @@ def day(server):
     counts = np.zeros(24)
     for i in data:
         counts[i[0]] = i[1]
-    f = interp1d(hours, counts, kind="cubic")
+    f = interp1d(hours, counts, kind="next")
     minites = np.linspace(0, 23, num=23 * 60)
-    plt.plot(hours, counts, ".k", minites, f(minites), "-k")
-    plt.title(server + " 日活")
+    plt.plot(hours, counts, ".", minites, f(minites), "-", label=server, color=color)
+    plt.legend()
     plt.xticks(hours)
-    plt.savefig(f"plots/日活_{server}_{yesterday}.png")
-    plt.clf()
+
 
 def week(server):
     week_start = today - timedelta(days=today.weekday())
@@ -56,6 +55,7 @@ def week(server):
     plt.colorbar()
     plt.savefig(f"plots/周活_{server}_{(today.day - 1) // 7 + 1}.png")
     plt.clf()
+
 
 def month(server):
     date = today.strftime("%Y-%m")
@@ -79,12 +79,14 @@ def month(server):
     plt.savefig(f"plots/月活_{server}_{date}.png")
     plt.clf()
 
+
 if __name__ == "__main__":
     today = datetime.now(pytz.timezone("Asia/Shanghai"))
     os.makedirs("plots", exist_ok=1)
     plt.rcParams["font.family"] = ["SimHei"]
-    day(vanilla)
-    day(mod)
+    day(vanilla, "c")
+    day(mod, "m")
+    plt.savefig(f"plots/日活.png")
     if today.weekday() == 0:
         week(vanilla)
         week(mod)
