@@ -33,5 +33,8 @@ if __name__ == "__main__":
     date = curr_time.strftime("%Y-%m-%d")
     hour = curr_time.hour
     print(date, " ", hour)
-    lookup_online(vanilla)
-    lookup_online(mod)
+    try:
+        lookup_online(vanilla)
+        lookup_online(mod)
+    except:
+        pass
